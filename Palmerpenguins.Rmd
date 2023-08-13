@@ -1,0 +1,105 @@
+---
+title: "PalmerPenguins"
+author: "Batuhanep"
+date: "2023-08-12"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+In this portfolio project, I will use the famous palmerpenguins dataset that I learned through Google Data Analytics program. 
+About the data: Data were collected and made available by Dr. Kristen Gorman and the Palmer Station, Antarctica LTER, a member of the Long Term Ecological Research Network.
+
+## Installation of Palmerpenguins.
+
+```{r}
+library(palmerpenguins)
+library(tidyverse)
+```
+
+```{r}
+head(penguins)
+```
+
+Note: We can also use summary(), str(), glimpse() and colnames() functions to summarize the data.
+
+Let's say we want to know statistical summary of the data:
+
+```{r}
+summary(penguins)
+```
+
+## Installing skimr and janitor
+
+```{r}
+library(janitor)
+library(skimr)
+skim(penguins)
+```
+
+Let's create a new dataframe by arranging the data by flipper length in a descending order, this way we can preview the relationships between columns.
+
+```{r}
+flipper_length_arrange <- arrange(penguins, desc(flipper_length_mm))
+```
+
+In this step, I will create a new dataframe that shows details for only Adelie.
+
+```{r}
+adelie_penguins <- filter(penguins, penguins$species=="Adelie")
+```
+
+Let's say we only want to see body mass for each species and islands by using pipe.
+
+```{r pipe}
+islands_penguins <- penguins %>% select(species, island, body_mass_g)
+```
+
+# Visualisation by Using Ggplot2
+
+```{r}
+library(ggplot2)
+```
+
+Let's start with basic visualization showing the relationship between body mass and flipper length and more.
+
+```{r}
+ggplot(data = penguins) +
+  geom_point(mapping = aes(x=flipper_length_mm, y=body_mass_g,color=species))+
+  labs(title =  "Body mass and flipper length")
+```
+
+Let's create graphs showing flipper lengths for each species separately.
+
+```{r}
+ggplot(data = penguins) +
+  geom_bar(mapping = aes(x=flipper_length_mm,fill=species)) + facet_wrap(~species)
+```
+
+We can also use geom_smooth to show relationship between body mass and flipper length.
+
+```{r}
+ggplot(data = penguins) +
+  geom_smooth(mapping = aes(x=flipper_length_mm, y=body_mass_g,color=species))
+```
+
+Plus, we can combine both together.
+
+```{r}
+ggplot(data = penguins) +
+  geom_point(mapping = aes(x=flipper_length_mm, y=body_mass_g,color=species)) +
+  geom_smooth(mapping = aes(x=flipper_length_mm, y=body_mass_g,color=species)) +
+  labs(title =  "Body mass and flipper length",subtitle="This graph shows the relationship between body mass and flipper length for each species") 
+```
+
+If we want to see how many species there are on each year:
+
+```{r}
+ggplot(data = penguins) +
+  geom_bar(mapping = aes(x=year,fill=species))+
+  labs(title = "Species for each year") +
+  facet_wrap(~species)
+```
+
+References : - <https://doi.org/10.1371/journal.pone.0090081> Ecological Sexual Dimorphism and Environmental Variability within a Community of Antarctic Penguins (Genus Pygoscelis) Kristen B. Gorman ,Tony D. Williams,William R. Fraser -Google Data Analytics Professional Certificate, Data Analysis with R Programming.
