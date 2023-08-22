@@ -56,6 +56,20 @@ Let's say we only want to see body mass for each species and islands by using pi
 islands_penguins <- penguins %>% select(species, island, body_mass_g)
 ```
 
+Ratio of flipper length to body mass in order from smallest to largest with a new dataframe:
+
+```{r}
+flipper_length_percentage <- mutate(penguins, flipper_length_percentage = flipper_length_mm / body_mass_g * 100) %>% arrange(flipper_length_percentage)
+View(flipper_length_percentage)
+```
+
+If we only want to see the bill depths between 13.6 and 19.5 for the island of Biscoe in descending order:
+
+```{r}
+Only_Biscoe <- filter(penguins, penguins$island=="Biscoe") %>% arrange(desc(bill_depth_mm)) %>% select(bill_depth_mm, island) %>% filter(between(bill_depth_mm,13.6,19.5))
+View(Only_Biscoe)
+```
+
 # Visualisation by Using Ggplot2
 
 ```{r}
@@ -70,7 +84,7 @@ ggplot(data = penguins) +
   labs(title =  "Body mass and flipper length")
 ```
 
-Let's create graphs showing flipper lengths for each species separately.
+Let’s create graphs showing flipper lengths for each species separately by using facet_wrap function. This way, we can see the results more clearly:
 
 ```{r}
 ggplot(data = penguins) +
@@ -93,6 +107,13 @@ ggplot(data = penguins) +
   labs(title =  "Body mass and flipper length",subtitle="This graph shows the relationship between body mass and flipper length for each species") 
 ```
 
+After combining geom_point and geom_smooth together, we can view all species separately by using facet_wrap:
+
+```{r}
+ggplot(data = penguins) + geom_point(mapping = aes(x=flipper_length_mm, y=body_mass_g,color=species)) + geom_smooth(mapping = aes(x=flipper_length_mm, y=body_mass_g,color=species)) +
++ labs(title =  "Body mass and flipper length",subtitle="This graph shows the relationship between body mass and flipper length for each species") + facet_wrap(~species)
+```
+
 If we want to see how many species there are on each year:
 
 ```{r}
@@ -101,5 +122,7 @@ ggplot(data = penguins) +
   labs(title = "Species for each year") +
   facet_wrap(~species)
 ```
+
+
 
 References : - <https://doi.org/10.1371/journal.pone.0090081> Ecological Sexual Dimorphism and Environmental Variability within a Community of Antarctic Penguins (Genus Pygoscelis) Kristen B. Gorman ,Tony D. Williams,William R. Fraser -Google Data Analytics Professional Certificate, Data Analysis with R Programming.
