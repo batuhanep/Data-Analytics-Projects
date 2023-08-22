@@ -183,5 +183,7 @@ and dea.date = vac.date
 where dea.continent is not null
 --order by 2,3
 
+--Visualisation link: https://public.tableau.com/app/profile/batuhan.zdemir/viz/AlexTheAnalystBootcampCovidProjectDashboard/Dashboard1
+
 
 -- Dataset :https://ourworldindata.org/covid-deaths
